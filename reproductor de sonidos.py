@@ -82,9 +82,9 @@ else:
 # --- Lista de archivos de sonido (EDITAR AQUÍ) ---------------------------------
 ARCHIVOS_SONIDOS = [
     "entrada_filippa.mp3",
-    "pasto.mp3",
-    "cargar.mp3",
-    "cargar.mp3",
+    "dai_dai.mp3",
+    "baile_6a.mp3",
+    "baile_6b.mp3",
     "cargar.mp3",
     "cargar.mp3",
     "cargar.mp3",
@@ -98,9 +98,9 @@ ARCHIVOS_SONIDOS = [
 # --- Nombres mostrados en los botones (EDITAR AQUÍ) -----------------------------
 NOMBRES_BOTONES = [
     "Entrada Filippa",
-    "Cortadora de pasto",
-    "Cargar",
-    "Cargar",
+    "Dai Dai",
+    "Baile 6A",
+    "Baile 6B",
     "Cargar",
     "Cargar",
     "Cargar",
