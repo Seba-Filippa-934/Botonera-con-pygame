@@ -98,7 +98,7 @@ ARCHIVOS_SONIDOS = [
     "cargar.mp3",
     "cargar.mp3",
     "cargar.mp3",
-    "cargar.mp3"
+    "7B-Noruega.mp3"
 ]
 
 # --- Nombres mostrados en los botones (EDITAR AQUÍ) -----------------------------
@@ -108,19 +108,19 @@ NOMBRES_BOTONES = [
     "1C",
     "1D-Uruguay",
     "2A-Francia",
-    "Cargar 6",
-    "Cargar 7",
-    "Cargar 8",
+    "2B",
+    "2C",
+    "3A",
     "3B-Colombia",
     "3C-EEUU",
     "4A",
     "4B",
-    "Cargar 13",
+    "5A",
     "5B",
-    "Cargar 15",
-    "Cargar 16",
-    "Cargar 17",
-    "Cargar 18"
+    "6",
+    "",
+    "7A",
+    "7B-Noruega"
 ]
 
 # ===========================================================================
