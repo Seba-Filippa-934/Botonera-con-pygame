@@ -95,7 +95,7 @@ ARCHIVOS_SONIDOS = [
     "4B.mp3",
     "cargar.mp3",
     "5B.mp3",
-    "cargar.mp3",
+    "6-Argentina.mp3",
     "cargar.mp3",
     "cargar.mp3",
     "7B-Noruega.mp3"
@@ -117,7 +117,7 @@ NOMBRES_BOTONES = [
     "4B",
     "5A",
     "5B",
-    "6",
+    "6-Argentina",
     "6",
     "7A",
     "7B-Noruega"
