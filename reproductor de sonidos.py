@@ -118,7 +118,7 @@ NOMBRES_BOTONES = [
     "5A",
     "5B",
     "6",
-    "",
+    "6",
     "7A",
     "7B-Noruega"
 ]
