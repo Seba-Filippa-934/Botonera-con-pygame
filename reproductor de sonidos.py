@@ -12,7 +12,7 @@ Controles:
     * Clic en un botón   -> reproduce su sonido.
     * Clic en 🔁         -> activa/desactiva el loop del sonido.
     * Teclas 1 a 9       -> primeros nueve sonidos.
-    * Teclas Q, W, E     -> últimos tres sonidos.
+    * Teclas Q a O       -> siguientes nueve sonidos.
     * Botón DETENER TODOS-> detiene inmediatamente todos los sonidos.
     * F11                -> alterna pantalla completa / ventana.
     * ESC                -> salir.
@@ -39,11 +39,11 @@ ANCHO_VENTANA = 1200
 ALTO_VENTANA = 700
 FPS_OBJETIVO = 60
 
-# --- Grilla de botones (4 columnas x 3 filas) ------------------------------
-COLUMNAS = 4
+# --- Grilla de botones (6 columnas x 3 filas = 18 botones) -----------------
+COLUMNAS = 6
 FILAS = 3
 NUM_BOTONES = COLUMNAS * FILAS
-MARGEN_LATERAL = 40
+MARGEN_LATERAL = 42  # Ajustado para centrar perfectamente 6 columnas
 SEPARACION_BOTONES = 24
 Y_GRILLA = 104
 ANCHO_BOTON = (ANCHO_VENTANA - 2 * MARGEN_LATERAL
@@ -81,12 +81,18 @@ else:
 
 # --- Lista de archivos de sonido (EDITAR AQUÍ) ---------------------------------
 ARCHIVOS_SONIDOS = [
-    "entrada_filippa.mp3",
-    "dai_dai.mp3",
-    "baile_6a.mp3",
-    "baile_6b.mp3",
-    "cargar.mp3",
-    "cargar.mp3",
+    "",
+    "1B-Inglaterra.mp3",
+    "1c.mp3",
+    "1d_6b.mp3",
+    "2A-Francia.mp3",
+    "2b.mp3",
+    "2c.mp3",
+    "3a.mp3",
+    "3b.mp3",
+    "3C-EEUU.mp3",
+    "4A.mp3",
+    "4B.mp3",
     "cargar.mp3",
     "cargar.mp3",
     "cargar.mp3",
@@ -98,17 +104,23 @@ ARCHIVOS_SONIDOS = [
 # --- Nombres mostrados en los botones (EDITAR AQUÍ) -----------------------------
 NOMBRES_BOTONES = [
     "Entrada Filippa",
-    "Dai Dai",
+    "1B-Inglaterra",
     "Baile 6A",
     "Baile 6B",
-    "Cargar",
-    "Cargar",
-    "Cargar",
-    "Cargar",
-    "Cargar",
-    "Cargar",
-    "Cargar",
-    "Cargar"
+    "2A-Francia",
+    "Cargar 6",
+    "Cargar 7",
+    "Cargar 8",
+    "Cargar 9",
+    "3C-EEUU",
+    "4A",
+    "4B",
+    "Cargar 13",
+    "Cargar 14",
+    "Cargar 15",
+    "Cargar 16",
+    "Cargar 17",
+    "Cargar 18"
 ]
 
 # ===========================================================================
@@ -137,7 +149,7 @@ COLOR_BOTON_DESHABILITADO = (46, 48, 55)
 COLOR_BOTON_DESHABILITADO_BORDE = (66, 68, 76)
 COLOR_TEXTO_DESHABILITADO = (122, 126, 138)
 
-# --- Colores para el botón de loop (NUEVO) ----------------------------------
+# --- Colores para el botón de loop ------------------------------------------
 COLOR_LOOP_ACTIVO = (96, 245, 155)      # Verde brillante cuando está activo
 COLOR_LOOP_INACTIVO = (62, 74, 112)     # Gris azulado cuando está inactivo
 COLOR_LOOP_BORDE = (150, 175, 235)      # Borde del botón de loop
@@ -243,7 +255,7 @@ class Boton:
         self.inicio_reproduccion = -1
         self.duracion_ms = 0.0
 
-        # Estado de loop (NUEVO)
+        # Estado de loop
         self.en_loop = False
         self.fuente_loop = fuente_mini
 
@@ -285,9 +297,9 @@ class Boton:
         self.presionado_hasta = ahora + DURACION_PULSACION_MS
         try:
             if self.en_loop:
-                self.sonido.play(loops=-1)  # Reproducir en loop (NUEVO)
+                self.sonido.play(loops=-1)
             else:
-                self.sonido.play()  # Reproducir normalmente
+                self.sonido.play()
         except pygame.error as exc:
             print(f"[ERROR] No se pudo reproducir '{self.texto}': {exc}")
             return False
@@ -303,17 +315,12 @@ class Boton:
         self.en_loop = not self.en_loop
         
         if self.en_loop:
-            # Activar loop
             if self.esta_sonando():
-                # Si ya está sonando, reiniciar con loop
                 self.sonido.stop()
                 self.sonido.play(loops=-1)
-                # Actualizar tiempo de inicio para la barra de progreso
                 self.inicio_reproduccion = pygame.time.get_ticks()
         else:
-            # Desactivar loop
             if self.esta_sonando():
-                # Detener el sonido
                 self.sonido.stop()
     
     def clic_en_loop(self, posicion):
@@ -335,7 +342,6 @@ class Boton:
         presionado = ahora < self.presionado_hasta
         hover = self.activo and self.rect.collidepoint(posicion_mouse)
 
-        # Al presionar, el botón "baja" hacia su sombra (efecto táctil)
         desplazamiento = 3 if presionado else 0
         rect = self.rect.move(0, desplazamiento)
 
@@ -403,18 +409,16 @@ class Boton:
                         pygame.draw.rect(superficie, COLOR_BARRA, relleno,
                                          border_radius=3)
 
-        # Botón de loop circular (esquina superior derecha) (NUEVO)
+        # Botón de loop circular (esquina superior derecha)
         if self.activo and self.sonido is not None:
             radio_loop = 14
             x_loop = rect.right - radio_loop - 8
             y_loop = rect.top + radio_loop + 40
             
-            # Verificar hover en el botón de loop
             distancia_mouse = math.sqrt((posicion_mouse[0] - x_loop)**2 + 
                                        (posicion_mouse[1] - y_loop)**2)
             hover_loop = distancia_mouse <= radio_loop
             
-            # Color según estado
             if self.en_loop:
                 color_fondo_loop = COLOR_LOOP_ACTIVO
                 color_borde_loop = (120, 255, 180)
@@ -422,13 +426,11 @@ class Boton:
                 color_fondo_loop = COLOR_LOOP_INACTIVO if not hover_loop else COLOR_BOTON_HOVER
                 color_borde_loop = COLOR_LOOP_BORDE
             
-            # Dibujar círculo
             pygame.draw.circle(superficie, color_fondo_loop, 
                              (x_loop, y_loop), radio_loop)
             pygame.draw.circle(superficie, color_borde_loop,
                              (x_loop, y_loop), radio_loop, width=2)
             
-            # Dibujar símbolo (usando emoji o carácter)
             try:
                 simbolo = "rep"
                 superficie_simbolo = self.fuente_loop.render(
@@ -436,22 +438,14 @@ class Boton:
                 superficie.blit(superficie_simbolo, 
                               superficie_simbolo.get_rect(center=(x_loop, y_loop)))
             except:
-                # Si el emoji no se renderiza, dibujar flechas manualmente
-                self._dibujar_simbolo_loop(superficie, x_loop, y_loop, 
-                                         COLOR_TEXTO_LOOP)
+                self._dibujar_simbolo_loop(superficie, x_loop, y_loop, COLOR_TEXTO_LOOP)
 
     def _dibujar_simbolo_loop(self, superficie, x, y, color):
         """Dibuja un símbolo de loop manual si el emoji no funciona."""
-        # Flecha superior (curva hacia la derecha)
-        pygame.draw.arc(superficie, color, 
-                       (x-8, y-8, 16, 16), 0.5, 2.5, 2)
-        pygame.draw.polygon(superficie, color, 
-                          [(x+6, y-4), (x+10, y), (x+6, y+4)])
-        # Flecha inferior (curva hacia la izquierda)
-        pygame.draw.arc(superficie, color, 
-                       (x-8, y-8, 16, 16), 3.6, 5.6, 2)
-        pygame.draw.polygon(superficie, color, 
-                          [(x-6, y+4), (x-10, y), (x-6, y-4)])
+        pygame.draw.arc(superficie, color, (x-8, y-8, 16, 16), 0.5, 2.5, 2)
+        pygame.draw.polygon(superficie, color, [(x+6, y-4), (x+10, y), (x+6, y+4)])
+        pygame.draw.arc(superficie, color, (x-8, y-8, 16, 16), 3.6, 5.6, 2)
+        pygame.draw.polygon(superficie, color, [(x-6, y+4), (x-10, y), (x-6, y-4)])
 
 
 # ===========================================================================
@@ -489,7 +483,7 @@ class BotoneraSonidos:
         self.superficie_titulo = self.fuente_titulo.render(
             "BOTONERA DE SONIDOS", True, COLOR_TITULO)
         self.superficie_ayuda = self.fuente_info.render(
-            "1-9 / Q W E: sonidos   ·   F11: pantalla completa   ·   ESC: salir",
+            "1-9 / Q-O: sonidos   ·   F11: pantalla completa   ·   ESC: salir",
             True, COLOR_TEXTO_INFO)
 
         # ------------------------------- Botones ------------------------------
@@ -519,8 +513,6 @@ class BotoneraSonidos:
         print(f"[INFO] Sonidos cargados: {cargados}/{NUM_BOTONES}")
 
     # ------------------------------------------------------------------
-    # Creación y carga
-    # ------------------------------------------------------------------
     def _crear_ventana(self):
         """Crea la ventana aplicando el modo pantalla completa actual."""
         banderas = getattr(pygame, "SCALED", 0)
@@ -534,11 +526,13 @@ class BotoneraSonidos:
 
     @staticmethod
     def _teclas_y_etiquetas():
-        """Devuelve pares (etiqueta visible, tecla pygame) para los 12 botones."""
+        """Devuelve pares (etiqueta visible, tecla pygame) para los 18 botones."""
         pares = []
+        # Primera fila: 1 a 9
         for numero in range(1, 10):
             pares.append((str(numero), getattr(pygame, f"K_{numero}")))
-        for letra in ("q", "w", "e"):
+        # Segunda fila: Q a O (9 teclas: Q, W, E, R, T, Y, U, I, O)
+        for letra in ("q", "w", "e", "r", "t", "y", "u", "i", "o"):
             pares.append((letra.upper(), getattr(pygame, f"K_{letra}")))
         return pares
 
@@ -608,8 +602,6 @@ class BotoneraSonidos:
         return botones
 
     # ------------------------------------------------------------------
-    # Acciones
-    # ------------------------------------------------------------------
     def reproducir_indice(self, indice):
         """Reproduce el sonido del botón indicado (usado por los atajos)."""
         if 0 <= indice < len(self.botones):
@@ -635,17 +627,13 @@ class BotoneraSonidos:
             return
         
         for boton in self.botones:
-            # Primero verificar si el clic fue en el botón de loop (NUEVO)
             if boton.clic_en_loop(posicion):
                 boton.toggle_loop()
                 return
-            # Luego verificar si fue en el botón principal
             if boton.rect.collidepoint(posicion):
                 boton.reproducir()
                 return
 
-    # ------------------------------------------------------------------
-    # Eventos
     # ------------------------------------------------------------------
     def manejar_eventos(self):
         """Procesa todos los eventos de la cola de Pygame."""
@@ -655,7 +643,7 @@ class BotoneraSonidos:
 
             elif evento.type == pygame.KEYDOWN:
                 if evento.key in self.teclas_presionadas:
-                    continue  # ignora la repetición automática de teclas
+                    continue
                 self.teclas_presionadas.add(evento.key)
 
                 if evento.key == pygame.K_F11:
@@ -671,8 +659,6 @@ class BotoneraSonidos:
             elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
                 self._manejar_clic(evento.pos)
 
-    # ------------------------------------------------------------------
-    # Dibujado
     # ------------------------------------------------------------------
     def dibujar(self):
         """Dibuja un fotograma completo de la aplicación."""
@@ -706,8 +692,6 @@ class BotoneraSonidos:
 
         pygame.display.flip()
 
-    # ------------------------------------------------------------------
-    # Bucle principal
     # ------------------------------------------------------------------
     def ejecutar(self):
         """Bucle principal de la aplicación."""
