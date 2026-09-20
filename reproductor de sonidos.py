@@ -81,46 +81,46 @@ else:
 
 # --- Lista de archivos de sonido (EDITAR AQUÍ) ---------------------------------
 ARCHIVOS_SONIDOS = [
-    "1A.mp3",
-    "1B-Inglaterra.mp3",
-    "1C.mp3",
-    "1D-Uruguay.mp3",
-    "2A-Francia.mp3",
-    "2B.mp3",
-    "2C.mp3",
-    "3A.mp3",
-    "3B-Colombia.mp3",
-    "3C-EEUU.mp3",
-    "4A.mp3",
-    "4B.mp3",
-    "cargar.mp3",
-    "5B.mp3",
-    "6-Argentina.mp3",
+    "1a.mp3",
+    "1b.mp3",
+    "1c.mp3",
+    "1d.mp3",
+    "2a.mp3",
+    "2b.mp3",
+    "2c.mp3",
+    "3a.mp3",
+    "3b.mp3",
+    "3c.mp3",
     "cargar.mp3",
     "cargar.mp3",
-    "7B-Noruega.mp3"
+    "4a.mp3",
+    "4b.mp3",
+    "cargar.mp3",
+    "5b.mp3",
+    "7a.mp3",
+    "7b.mp3"
 ]
 
 # --- Nombres mostrados en los botones (EDITAR AQUÍ) -----------------------------
 NOMBRES_BOTONES = [
     "1A",
-    "1B-Inglaterra",
+    "1B",
     "1C",
-    "1D-Uruguay",
-    "2A-Francia",
+    "1D",
+    "2A",
     "2B",
     "2C",
     "3A",
-    "3B-Colombia",
-    "3C-EEUU",
+    "3B",
+    "3C",
+    "FIN C.B.",
+    "INICIO C.E.",
     "4A",
     "4B",
-    "5A",
+    "NO BAILA",
     "5B",
-    "6-Argentina",
-    "6",
     "7A",
-    "7B-Noruega"
+    "7B"
 ]
 
 # ===========================================================================
